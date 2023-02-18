@@ -77,20 +77,25 @@ public class SalaryCalculator {
         int basicSalary = basicSalaryThread.getBasicSalary();
 
         allowancesThread = new AllowancesThread(basicSalary);
-        epfThread = new EPFThread(basicSalary + allowancesThread.getAllowances());
-
         allowancesThread.start();
-        epfThread.start();
-
         allowancesThread.join();
-        epfThread.join();
-
         int allowances = allowancesThread.getAllowances();
-        int epf = epfThread.getEPF();
-        int employerContribution = (int) (0.12 * (basicSalary + allowances + epf));
-        int finalSalary = basicSalary + allowances + epf - employerContribution;
 
-        System.out.println("Basic Salary: " + basicSalary);
-        System.out.println("Final Salary: " + finalSalary);
+        int totalMonthlyEarnings = basicSalary + allowances;
+
+        epfThread = new EPFThread(totalMonthlyEarnings);
+        epfThread.start();
+        epfThread.join();
+        int epf = epfThread.getEPF();
+
+        int employerContribution = (int) (0.12 * totalMonthlyEarnings);
+        int finalSalary = totalMonthlyEarnings - epf + employerContribution;
+
+        System.out.println("Basic Salary (payment amount per day * no. of days): " + basicSalary);
+        System.out.println("Allowances (5% * Basic Salary): " + allowances);
+        System.out.println("Total Monthly Earnings (Basic Salary + Allowances): " + totalMonthlyEarnings);
+        System.out.println("EPF (8% * Total Monthly Earnings): " + epf);
+        System.out.println("Employer Contribution (12% * Total Monthly Earnings): " + employerContribution);
+        System.out.println("Final Salary (Basic Salary + Allowances + Employer Contribution - EPF): " + finalSalary);
     }
 }
