@@ -91,9 +91,6 @@ public class SalaryCalculator {
         int finalSalary = basicSalary + allowances + epf - employerContribution;
 
         System.out.println("Basic Salary: " + basicSalary);
-        System.out.println("Allowances: " + allowances);
-        System.out.println("EPF: " + finalSalary);
-        System.out.println("Employer's Contribution: " + employerContribution);
         System.out.println("Final Salary: " + finalSalary);
     }
 }
